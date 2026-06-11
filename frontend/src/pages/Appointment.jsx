@@ -56,6 +56,7 @@ const Appointment = () => {
       const timeSlots = []
 
       while (currentDate < endTime) {
+        // toLocaleTimeString converts 13:30 to 1:30 pm
         const formattedTime = currentDate.toLocaleTimeString([], {
           hour: '2-digit',
           minute: '2-digit'
@@ -103,17 +104,19 @@ const Appointment = () => {
     const slotDate = day + "_" + month + "_" + year
 
     try {
-
+      // sen request
       const { data } = await axios.post(backendUrl + '/api/user/book-appointment', { docId, slotDate, slotTime }, { headers: { token } })
       if (data.success) {
         toast.success(data.message)
         getDoctorsData()
         navigate('/my-appointments')
-      } else {
+      } 
+      else {
         toast.error(data.message)
       }
 
-    } catch (error) {
+    } 
+    catch (error) {
       console.log(error)
       toast.error(error.message)
     }
@@ -195,7 +198,8 @@ const Appointment = () => {
                 <p
                   onClick={() => setSlotTime(item.time)}
                   key={index}
-                  className={`text-sm font-light flex-shrink-0 px-5 py-2 rounded-full cursor-pointer ${item.time === slotTime
+                  className={`text-sm font-light flex-shrink-0 px-5 py-2 rounded-full cursor-pointer 
+                    ${item.time === slotTime
                       ? 'bg-primary text-white'
                       : 'text-[#949494] border border-[#B4B4B4]'
                     }`}
