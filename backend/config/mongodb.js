@@ -1,7 +1,5 @@
 import mongoose from "mongoose";
-// import dns from "dns";
 
-// dns.setDefaultResultOrder("ipv4first");
 
 const connectDB = async () => {
   try {

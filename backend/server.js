@@ -12,7 +12,7 @@ const app = express()
 const port = process.env.PORT || 4000
 
 // Connect to database (CALL THE FUNCTION)
-console.log("URI =", process.env.MONGODB_URI);
+//console.log("URI =", process.env.MONGODB_URI);
 connectDB()
 // connectCloudinary()
 
