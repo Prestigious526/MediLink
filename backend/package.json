@@ -12,6 +12,7 @@
     "server": "nodemon server.js"
   },
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "cloudinary": "^2.10.0",
     "cors": "^2.8.6",
     "decrypt": "^0.0.1",
