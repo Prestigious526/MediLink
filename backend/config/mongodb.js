@@ -2,19 +2,20 @@ import mongoose from "mongoose";
 
 const connectDB = async () => {
   try {
-    console.log("Connecting to MongoDB...");
-    console.log("URI exists:", !!process.env.MONGODB_URI);
+    const uri = process.env.MONGODB_URI;
+    if (!uri) {
+      console.error("MONGODB_URI is not set in environment");
+      return;
+    }
 
-    const conn = await mongoose.connect(process.env.MONGODB_URI);
+    await mongoose.connect(uri, {
+      serverSelectionTimeoutMS: 10000,
+      connectTimeoutMS: 10000
+    });
 
     console.log("Database Connected");
-    console.log("Database Name:", conn.connection.name);
-    console.log("Host:", conn.connection.host);
-
   } catch (error) {
-    console.error("Database connection error:");
-    console.error(error);
-    throw error;
+    console.error("Database connection error:", error);
   }
 };
 

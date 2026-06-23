@@ -16,7 +16,7 @@ const port = process.env.PORT || 4000
 connectDB()
 connectCloudinary()
 
-// middlewares
+// middlewaresI
 app.use(express.json())
 app.use(cors())
 
