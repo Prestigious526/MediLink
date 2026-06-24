@@ -1,22 +1,22 @@
 import React, { useContext } from 'react'
-import { assets } from '../assets/assets_admin'
-import { DoctorContext } from '../context/DoctorContext'
+import { assets } from '../assets/assets_admin/assets.js'
+// import { DoctorContext } from '../context/DoctorContext'
 import { AdminContext } from '../context/AdminContext'
 import { useNavigate, useLocation } from 'react-router-dom'
 
 const Navbar = () => {
 //   const { dToken, setDToken } = useContext(DoctorContext)
-//   const { aToken, setAToken } = useContext(AdminContext)
-//   const navigate = useNavigate()
+   const { aToken, setAToken } = useContext(AdminContext)
+   const navigate = useNavigate()
 //   const location = useLocation()
 
-//   const logout = () => {
-//     navigate('/')
+   const logout = () => {
+        navigate('/')
 //     dToken && setDToken('')
 //     dToken && localStorage.removeItem('dToken')
-//     aToken && setAToken('')
-//     aToken && localStorage.removeItem('aToken')
-//   }
+        aToken && setAToken('')
+        aToken && localStorage.removeItem('aToken')
+   }
 
 //   const goToUserPanel = () => {
 //     window.location.href = 'https://appointy-roan.vercel.app/'
@@ -39,9 +39,9 @@ const Navbar = () => {
         />
 
         {/* Role Label */}
-        {/* <p className='border px-2.5 py-0.5 rounded-full border-gray-500 text-gray-600'>
+        <p className='border px-2.5 py-0.5 rounded-full border-gray-500 text-gray-600'>
           {aToken ? 'Admin' : 'Doctor'}
-        </p> */}
+        </p>
 
         {/* User Panel Button (visible on both dashboards) */}
         {/* {isOnDashboard && (
@@ -55,12 +55,12 @@ const Navbar = () => {
       </div>
 
       {/* Logout */}
-      {/* <button
+      <button
         onClick={logout}
         className='bg-primary text-white text-sm px-10 py-2 rounded-full'
       >
         Logout
-      </button> */}
+      </button>
     </div>
   )
 }
