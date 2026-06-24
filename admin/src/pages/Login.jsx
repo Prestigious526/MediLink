@@ -11,16 +11,15 @@ const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const backendUrl = import.meta.env.VITE_BACKEND_URL
+  //const backendUrl = import.meta.env.VITE_BACKEND_URL
 
   const { setDToken } = useContext(DoctorContext)
-  const { setAToken } = useContext(AdminContext)
+  const { setAToken, backendUrl } = useContext(AdminContext)
 
   const onSubmitHandler = async (event) => { 
     event.preventDefault();
-
+    
     if (state === 'Admin') {
-
       const { data } = await axios.post(backendUrl + '/api/admin/login', { email, password })
       if (data.success) {
         setAToken(data.token)
