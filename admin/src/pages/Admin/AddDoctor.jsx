@@ -19,8 +19,7 @@ const AddDoctor = () => {
   const [address1, setAddress1] = useState('')
   const [address2, setAddress2] = useState('')
 
-  const { backendUrl } = useContext(AdminContext)
-  const { aToken } = useContext(AdminContext)
+  const { backendUrl, aToken } = useContext(AdminContext)
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
@@ -43,13 +42,11 @@ const AddDoctor = () => {
       formData.append('degree', degree);
       formData.append('address', JSON.stringify({ line1: address1, line2: address2 }));
 
-      // Debugging FormData (optional, can remove later)
-      formData.forEach((value, key) => {
-        console.log(`${key}: ${value}`);
-      });
+    //   formData.forEach((value, key) => {
+    //     console.log(`${key}: ${value}`);
+    //   });
 
-      const response = await axios.post(`${backendUrl}/api/admin/add-doctor`, formData, {
-        headers: { aToken}  })
+      const response = await axios.post(`${backendUrl}/api/admin/add-doctor`, formData, { headers: { aToken}  })
       const data= response.data;
       if (data.success) {
                 toast.success(data.message)
