@@ -31,6 +31,7 @@ const AdminContextProvider = (props) => {
         }
 
     }
+    //changing availability of doctors
     const changeAvailability = async (docId) => {
         try {
 
