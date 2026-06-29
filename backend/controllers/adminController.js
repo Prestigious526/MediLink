@@ -69,7 +69,7 @@ const loginAdmin = async (req, res) => {
       } 
       else {
           res.json({ success: false, message: "Invalid credentials" })
-      }a
+      }
     } 
     catch (error) {
       console.log(error)
