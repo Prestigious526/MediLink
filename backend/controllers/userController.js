@@ -95,35 +95,31 @@ const getProfile = async (req, res) => {
 }
 
 // // API to update user profile
-// const updateProfile = async (req, res) => {
+const updateProfile = async (req, res) => {
+    try {
+        const { userId, name, phone, address, dob, gender } = req.body
+        const imageFile = req.file
 
-//     try {
+        if (!name || !phone || !dob || !gender) {
+            return res.json({ success: false, message: "Data Missing" })
+        }
 
-//         const { userId, name, phone, address, dob, gender } = req.body
-//         const imageFile = req.file
+        await userModel.findByIdAndUpdate(userId, { name, phone, address: JSON.parse(address), dob, gender })
 
-//         if (!name || !phone || !dob || !gender) {
-//             return res.json({ success: false, message: "Data Missing" })
-//         }
+        if (imageFile) {
+            // upload image to cloudinary
+            const imageUpload = await cloudinary.uploader.upload(imageFile.path, { resource_type: "image" })
+            const imageURL = imageUpload.secure_url
+            await userModel.findByIdAndUpdate(userId, { image: imageURL })
+        }
 
-//         await userModel.findByIdAndUpdate(userId, { name, phone, address: JSON.parse(address), dob, gender })
+        res.json({ success: true, message: 'Profile Updated' })
 
-//         if (imageFile) {
-
-//             // upload image to cloudinary
-//             const imageUpload = await cloudinary.uploader.upload(imageFile.path, { resource_type: "image" })
-//             const imageURL = imageUpload.secure_url
-
-//             await userModel.findByIdAndUpdate(userId, { image: imageURL })
-//         }
-
-//         res.json({ success: true, message: 'Profile Updated' })
-
-//     } catch (error) {
-//         console.log(error)
-//         res.json({ success: false, message: error.message })
-//     }
-// }
+    } catch (error) {
+        console.log(error)
+        res.json({ success: false, message: error.message })
+    }
+}
 
 // // API to book appointment 
 // const bookAppointment = async (req, res) => {
@@ -283,5 +279,5 @@ const getProfile = async (req, res) => {
 //     }
 // }
 
-export {registerUser, loginUser, getProfile}
+export {registerUser, loginUser, getProfile, updateProfile }
 // export {registerUser, loginUser, getProfile, updateProfile, bookAppointment, listAppointment, cancelAppointment, paymentRazorpay, verifyRazorpay}
