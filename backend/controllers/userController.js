@@ -5,7 +5,7 @@ import doctorModel from "../models/doctorModel.js";
 import appointmentModel from "../models/appointmentModel.js";
 import jwt from "jsonwebtoken";
 import {v2 as cloudinary} from 'cloudinary'  
-import razorpay from 'razorpay';
+//import razorpay from 'razorpay';
 
     
 
@@ -13,8 +13,9 @@ import razorpay from 'razorpay';
 const registerUser = async (req, res) => {
 
     try {
+        console.log(req.body);
         const { name, email, password } = req.body;
-
+        
         // checking for all data to register user
         if (!name || !email || !password) {
             return res.json({ success: false, message: 'Missing Details' })
@@ -53,45 +54,45 @@ const registerUser = async (req, res) => {
 }
 
 // // API to login user
-// const loginUser = async (req, res) => {
+const loginUser = async (req, res) => {
 
-//     try {
-//         const { email, password } = req.body;
-//         const user = await userModel.findOne({ email })
+    try {
+        const { email, password } = req.body;
+        const user = await userModel.findOne({ email })
 
-//         if (!user) {
-//             return res.json({ success: false, message: "User does not exist" })
-//         }
+        if (!user) {
+            return res.json({ success: false, message: "User does not exist" })
+        }
 
-//         const isMatch = await bcrypt.compare(password, user.password)
+        const isMatch = await bcrypt.compare(password, user.password)
 
-//         if (isMatch) {
-//             const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET)
-//             res.json({ success: true, token })
-//         }
-//         else {
-//             res.json({ success: false, message: "Invalid credentials" })
-//         }
-//     } catch (error) {
-//         console.log(error)
-//         res.json({ success: false, message: error.message })
-//     }
-// }
+        if (isMatch) {
+            const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET)
+            res.json({ success: true, token })
+        }
+        else {
+            res.json({ success: false, message: "Invalid credentials" })
+        }
+    } catch (error) {
+        console.log(error)
+        res.json({ success: false, message: error.message })
+    }
+}
 
 // // API to get user profile data
-// const getProfile = async (req, res) => {
+const getProfile = async (req, res) => {
 
-//     try {
-//         const { userId } = req.body
-//         const userData = await userModel.findById(userId).select('-password')
+    try {
+        const { userId } = req.body
+        const userData = await userModel.findById(userId).select('-password')
 
-//         res.json({ success: true, userData })
+        res.json({ success: true, userData })
 
-//     } catch (error) {
-//         console.log(error)
-//         res.json({ success: false, message: error.message })
-//     }
-// }
+    } catch (error) {
+        console.log(error)
+        res.json({ success: false, message: error.message })
+    }
+}
 
 // // API to update user profile
 // const updateProfile = async (req, res) => {
@@ -282,5 +283,5 @@ const registerUser = async (req, res) => {
 //     }
 // }
 
-export {registerUser}
+export {registerUser, loginUser, getProfile}
 // export {registerUser, loginUser, getProfile, updateProfile, bookAppointment, listAppointment, cancelAppointment, paymentRazorpay, verifyRazorpay}

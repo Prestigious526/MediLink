@@ -10,6 +10,12 @@ const Navbar = () => {
 
   const [showMenu, setShowMenu] = useState(false)
 
+  const logout = () => {
+    localStorage.removeItem('token')
+    setToken(false)
+    navigate('/login')
+  }
+
   return (
     <div className='flex items-center justify-between text-sm pt-2 pb-0 border-b border-b-gray-400'>
       <img onClick= {() => navigate(`/`)} className = 'w-44 cursor-pointer' src = {assets.logo} alt = "Logo"/>
@@ -43,7 +49,7 @@ const Navbar = () => {
                 <div className='min-w-48 bg-stone-100 rounded flex flex-col gap-4 p-4'>
                   <p onClick = {() => {navigate('/my-profile')}} className='hover:text-black cursor-pointer'>My Profile</p>
                   <p onClick = {() => {navigate('/my-appointments')}} className='hover:text-black cursor-pointer'>My Appointments</p>
-                  <p onClick = {() => {setToken(''); localStorage.removeItem('token')}} className='hover:text-black cursor-pointer'>Logout</p>
+                  <p onClick = {logout} className='hover:text-black cursor-pointer'>Logout</p>
                 </div>
               </div>
             </div>
