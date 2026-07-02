@@ -65,14 +65,13 @@ const Appointment = () => {
         const day = currentDate.getDate()
         const month = currentDate.getMonth() + 1
         const year = currentDate.getFullYear()
+
         const slotDate = `${day}_${month}_${year}`
         const slotTime = formattedTime
 
-        const isSlotAvailable =
-          !docInfo?.slots_booked?.[slotDate] ||
-          !docInfo.slots_booked[slotDate].includes(slotTime)
+        const isSlotAvailable = docInfo.slots_booked[slotDate] && docInfo.slots_booked[slotDate].includes(slotTime) ? false : true;
         
-        //add slots to array
+        //add available slots to array
         if (isSlotAvailable) {
           timeSlots.push({
             datetime: new Date(currentDate),
@@ -104,7 +103,7 @@ const Appointment = () => {
     const slotDate = day + "_" + month + "_" + year
 
     try {
-      // sen request
+      // send request
       const { data } = await axios.post(backendUrl + '/api/user/book-appointment', { docId, slotDate, slotTime }, { headers: { token } })
       if (data.success) {
         toast.success(data.message)

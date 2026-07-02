@@ -178,53 +178,54 @@ const bookAppointment = async (req, res) => {
 
 }
 
-// // API to cancel appointment
-// const cancelAppointment = async (req, res) => {
-//     try {
+// API to get user appointments for frontend my-appointments page
+const listAppointment = async (req, res) => {
+    try {
 
-//         const { userId, appointmentId } = req.body
-//         const appointmentData = await appointmentModel.findById(appointmentId)
+        const { userId } = req.body
+        const appointments = await appointmentModel.find({ userId })
 
-//         // verify appointment user 
-//         if (appointmentData.userId !== userId) {
-//             return res.json({ success: false, message: 'Unauthorized action' })
-//         }
+        res.json({ success: true, appointments })
 
-//         await appointmentModel.findByIdAndUpdate(appointmentId, { cancelled: true })
+    } catch (error) {
+        console.log(error)
+        res.json({ success: false, message: error.message })
+    }
+}
 
-//         // releasing doctor slot 
-//         const { docId, slotDate, slotTime } = appointmentData
+// API to cancel appointment
+const cancelAppointment = async (req, res) => {
+    try {
 
-//         const doctorData = await doctorModel.findById(docId)
+        const { userId, appointmentId } = req.body
+        const appointmentData = await appointmentModel.findById(appointmentId)
 
-//         let slots_booked = doctorData.slots_booked
+        // verify appointment user 
+        if (appointmentData.userId !== userId) {
+            return res.json({ success: false, message: 'Unauthorized action' })
+        }
 
-//         slots_booked[slotDate] = slots_booked[slotDate].filter(e => e !== slotTime)
+        await appointmentModel.findByIdAndUpdate(appointmentId, { cancelled: true })
 
-//         await doctorModel.findByIdAndUpdate(docId, { slots_booked })
+        // releasing doctor slot 
+        const { docId, slotDate, slotTime } = appointmentData
 
-//         res.json({ success: true, message: 'Appointment Cancelled' })
+        const doctorData = await doctorModel.findById(docId)
 
-//     } catch (error) {
-//         console.log(error)
-//         res.json({ success: false, message: error.message })
-//     }
-// }
+        let slots_booked = doctorData.slots_booked
 
-// // API to get user appointments for frontend my-appointments page
-// const listAppointment = async (req, res) => {
-//     try {
+        slots_booked[slotDate] = slots_booked[slotDate].filter(e => e !== slotTime)
 
-//         const { userId } = req.body
-//         const appointments = await appointmentModel.find({ userId })
+        await doctorModel.findByIdAndUpdate(docId, { slots_booked })
 
-//         res.json({ success: true, appointments })
+        res.json({ success: true, message: 'Appointment Cancelled' })
 
-//     } catch (error) {
-//         console.log(error)
-//         res.json({ success: false, message: error.message })
-//     }
-// }
+    } catch (error) {
+        console.log(error)
+        res.json({ success: false, message: error.message })
+    }
+}
+
 
 // const razorpayInstance = new razorpay({
 //     key_id: process.env.RAZORPAY_KEY_ID,
@@ -279,5 +280,5 @@ const bookAppointment = async (req, res) => {
 //     }
 // }
 
-export {registerUser, loginUser, getProfile, updateProfile, bookAppointment }
+export {registerUser, loginUser, getProfile, updateProfile, bookAppointment, listAppointment, cancelAppointment }
 // export {registerUser, loginUser, getProfile, updateProfile, bookAppointment, listAppointment, cancelAppointment, paymentRazorpay, verifyRazorpay}
